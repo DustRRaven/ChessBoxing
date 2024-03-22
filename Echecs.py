@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 import time
 import sys
-import numpy
 
 # pygame setup
 pygame.init()
@@ -10,7 +9,6 @@ screen = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 running = True
 dt = 0
-tour = 1
 pygame.display.set_caption('Echecs')
 font = pygame.font.SysFont(None, 30)
 ROUGE = (255, 0, 0)
@@ -24,8 +22,17 @@ colours =   {
                 W : WHITE,
             }
 
+grille  = [
+            [B,W,B,W,B,W,B,W],
+            [W,B,W,B,W,B,W,B],
+            [B,W,B,W,B,W,B,W],
+            [W,B,W,B,W,B,W,B],
+            [B,W,B,W,B,W,B,W],
+            [W,B,W,B,W,B,W,B],
+            [B,W,B,W,B,W,B,W],
+            [W,B,W,B,W,B,W,B]
+          ]
 
-            
 
 
 
@@ -374,119 +381,15 @@ button_rect64 = button_surface64.get_rect(bottomleft=(525,75))
 
 
                                 
-''''class Pion:
-    def __init__(self, position, equipe):
-        self.position = position
-        self.equipe = equipe
-    def mouvements(self, nouvelle_position, grille, dico_pos):
-        if grille[nouvelle_position] != 0 :
-            print("Position déja prise par une pièce")'''
-
-class Piece:
-    def __init__(self, color):
-        self.color = color
-
 class Pion:
-    def __init__(self, color, position):
-        super().__init__(color)
-        self.position = position #position  == [axe des y, axe des x]
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
-    def mouvements_pion(self, nouv_position):
-        if Echiquier.case_vide(nouv_position):
-            if tour == 1: #on ne peut aller que devant et on peut avancer de 1 ou 2 cases au tour 1
-                if nouv_position == (self.position[2],self.position[1]) or nouv_position == (self.position[3],self.position[1]) :
-                    self.position = nouv_position
-            else:  #si on est pas au tour 1
-                if nouv_position == (self.position[0]+1,self.position[1]): #cas ou on veut juste avancer d'une case
-                    self.position = nouv_position
-                if nouv_position == (self.position[0]+1,self.position[1]-1) or (self.position[0]+1,self.position[1]+1): #cas ou on veut prendre une piece
-                    # si éqyuipe adverse on rpend le pion  nouv position
-                    ()
+    def __init__(self, position):
+        self.position = position
 
-
-    
-class Tour:
-    def __init__(self, color, position):
-        super().__init__(color)
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
-
-class Cavalier:
-    def __init__(self, color, ):
-        super().__init__(color)
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
-
-class Fou:
-    def __init__(self, color):
-        super().__init__(color)
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
-
-class Reine:
-    def __init__(self, color):
-        super().__init__(color)
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
-
-    
-class Fou:
-    def __init__(self, color):
-        super().__init__(color)
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
-
-
-class Roi:
-    def __init__(self, color):
-        super().__init__(color)
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
-    
-
-    
-class Echiquier:
-    def __init__(self):
-        self.board = [[None] * 8 for _ in range(8)]
-        self.populate_board()
-    def populate_board(self):
-        # Initialise les positions de départ
-        for i in range(8):
-            self.board[1][i] = Pion('white',[0][i])
-            self.board[6][i] = Pion('black', [6][i])
-        self.board[0][0] = Tour('white',([0][0]))
-        self.board[7][0] = Tour('black', ([7][0]))
-        self.board[7][1] = Cavalier('black',([7][1]))
-        self.board[7][6] = Cavalier('black',([7][6]))
-        self.board[0][1] = Cavalier('white',([0][1]))
-        self.board[0][6] = Cavalier('white',([0][6]))
-        self.board[0][2] = Fou('white',([0][2]))
-        self.board[0][5] = Fou('white',([0][5]))
-        self.board[7][2] = Fou('black',([7][2]))
-        self.board[7][5] = Fou('black',([7][5]))
-        self.board[7][4] = Roi('black',([7][4]))
-        self.board[0][4] = Roi('white',([0][4]))
-        self.board[7][3] = Reine('black',([7][3]))
-        self.board[0][3] = Reine('white',([0][3]))
-        
-
-    def draw_board():
-        #construit l'échiquier sur la fenêtre
-        for row in range(8):
-            for col in range(8):
-                color = WHITE if (row + col) % 2 == 0 else GRAY
-                pygame.draw.rect(screen, color, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
-    def mouvements(self, nouv_postion):
-        self.position = nouv_postion
-    def case_vide(self, pos):
-        if pos == None:
-            return True
-        return False
-    
-
-       
+    def mouvements(self, nouvelle_position):
+        self.position = nouvelle_position
 
         
-class Jeu:
-    def __init__(self):
-        None
-                
 
-        
     
 
 
@@ -498,10 +401,9 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                if button_rect1.collidepoint(event.pos):
+                if button_rect33.collidepoint(event.pos):
             # Afficher un message lorsque le bouton est cliqué
                     afficher_message("Le bouton a été cliqué !")
-    
     fenetre.blit(button_surface1, button_rect1)
     fenetre.blit(button_surface2, button_rect2)
     fenetre.blit(button_surface3, button_rect3)
@@ -567,12 +469,15 @@ while running:
     fenetre.blit(button_surface63, button_rect63)
     fenetre.blit(button_surface64, button_rect64)
     
+    
+    
+    
+    
+    
     pygame.display.flip()
     draw_board()
-    clock.tick(60)
 
     
 
 pygame.quit()
 sys.exit()
-
