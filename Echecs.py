@@ -23,12 +23,6 @@ colours =   {
             }
 
 
-            
-
-
-
-
-
 # Définition des couleurs
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -41,14 +35,6 @@ WIDTH, HEIGHT = 800, 600
 SQUARE_SIZE = HEIGHT // 8
 
 
-
-
-
-
-
-
-
-
 TILESIZE  = 100
 MAPWIDTH  = 8
 MAPHEIGHT = 8
@@ -56,8 +42,6 @@ MAPHEIGHT = 8
 ''' Initialisation des images png de pion'''
 fenetre = pygame.display.set_mode((800, 600))
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-
-
 
 
 pioni = pygame.image.load('images/pion.png').convert_alpha()
@@ -391,7 +375,7 @@ class Pion:
         #self.image = pygame.image.load(f'images/{color}_pawn.png')
     def mouvements_pion(self, nouv_position):
         if Echiquier.case_vide(nouv_position):
-            if self.color == 'white'
+            if self.color == 'white':
                 if tour == 1: #on ne peut aller que devant et on peut avancer de 1 ou 2 cases au tour 1
                     if nouv_position == ([2],self.position[1]) or nouv_position == ([3],self.position[1]) :
                         self.position = nouv_position
@@ -401,7 +385,7 @@ class Pion:
                     if nouv_position == (self.position[0]+1,self.position[1]-1) or (self.position[0]+1,self.position[1]+1): #cas ou on veut prendre une piece
                         # si éqyuipe adverse on rpend le pion  nouv position
                         if self.color not in Echiquier.self.board[nouv_position[0],[nouv_position[1]]]:
-                            self.board[nouv_position[0], nouv_position[1]] = Pion(self.color, nouv_position):
+                            self.board[nouv_position[0], nouv_position[1]] = Pion(self.color, nouv_position)                          
                             self.board[self.position[0], self.position[1]] = None
             else:
                 if tour == 1: #on ne peut aller que devant et on peut avancer de 1 ou 2 cases au tour 1
@@ -413,7 +397,7 @@ class Pion:
                     if nouv_position == (self.position[0]-1,self.position[1]-1) or (self.position[0]-1,self.position[1]+1): #cas ou on veut prendre une piece
                         # si éqyuipe adverse on rpend le pion  nouv position
                         if self.color not in Echiquier.self.board[nouv_position[0],[nouv_position[1]]]:
-                            self.board[nouv_position[0], nouv_position[1]] = Pion(self.color, nouv_position):
+                            self.board[nouv_position[0], nouv_position[1]] = Pion(self.color, nouv_position)
                             self.board[self.position[0], self.position[1]] = None
 
                     
