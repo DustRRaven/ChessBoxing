@@ -2,76 +2,51 @@ import pygame
 from pygame.locals import *
 import sys
 
+# Constantes
+
+ROUGE = (255, 0, 0)
+
+## Définition des couleurs
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+BROWN = (107, 68, 35)
+BEIGE = (205, 205, 180)
+
+W = 0
+B = 1
+colours = {B: BLACK, W: WHITE}
+
+
+
+## Définition des dimensions de la fenêtre, vérification que la variable SQUARE_SIZE sera impair pour avoir son centre parfait
+WIDTH, HEIGHT = 800, 600
+while min(WIDTH // 8, HEIGHT //8) % 2 != 1:
+    if WIDTH < HEIGHT       : WIDTH -= 1
+    elif WIDTH > HEIGHT     : HEIGHT -= 1
+    else                    : WIDTH-=1 ; HEIGHT-=1
+
+## Définition de la taille de la case
+
+SQUARE_SIZE = min(WIDTH // 8, HEIGHT // 8)
+EMPTY_WIDTH = WIDTH - HEIGHT
+
+## Inutile : TILESIZE  = 100
+MAPWIDTH  = 8
+MAPHEIGHT = 8
+
+
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 running = True
 dt = 0
 tour = 1
 pygame.display.set_caption('Echecs')
 font = pygame.font.SysFont(None, 30)
-ROUGE = (255, 0, 0)
-
-BLACK = (150,   150,   150  )
-WHITE  = (255,   255,   255)
-W = 0
-B = 1
-colours =   {
-                B  : BLACK,
-                W : WHITE,
-            }
+fenetre = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
-# Définition des couleurs
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GRAY = (200, 200, 200)
-
-# Définition des dimensions de la fenêtre
-WIDTH, HEIGHT = 800, 600
-
-# Définition de la taille de la case
-
-SQUARE_SIZE = HEIGHT // 8
-EMPTY_WIDTH = WIDTH - HEIGHT
-
-TILESIZE  = 100
-MAPWIDTH  = 8
-MAPHEIGHT = 8
-
-''' Initialisation des images png de pion'''
-fenetre = pygame.display.set_mode((800, 600))
-player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-
-
-pioni = pygame.image.load('images/pion.png').convert_alpha()
-pion = [0,0]
-fenetre.blit(pioni, (pion[0], pion[1]))
-
-reinei = pygame.image.load("images/reine.png").convert_alpha()
-reine = [0,0]
-fenetre.blit(reinei, (reine[0], reine[1]))
-
-roii = pygame.image.load("images/roi.png").convert_alpha()
-roi = [0,0]
-fenetre.blit(roii, (roi[0], roi[1]))
-
-touri = pygame.image.load("images/tour.png").convert_alpha()
-tour = [0,0]
-fenetre.blit(touri, (tour[0], tour[1]))
-
-chavalieri = pygame.image.load("images/cavalier.png").convert_alpha()
-chavalier = [0,0]
-fenetre.blit(chavalieri, (chavalier[0], chavalier[1]))
-
-foui = pygame.image.load("images/fou.png").convert_alpha()
-fou = [0,0]
-fenetre.blit(foui, (fou[0], fou[1]))
-
-touri2 = pygame.image.load("images/tour.png").convert_alpha()
-tour2 = [0,0]
-fenetre.blit(touri2, (tour2[0], tour2[1]))
 
 def position_piece(piece, abscisse, ordonnee):
     if abscisse <= 7 or ordonnee <= 7:
@@ -93,9 +68,9 @@ def afficher_message(message):
 def draw_board():
     for row in range(8):
         for col in range(8):
-            color = WHITE if (row + col) % 2 == 0 else GRAY
+            color = BEIGE if (row + col) % 2 == 0 else BROWN
             pygame.draw.rect(screen, color, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
-
+            
 
 class Button:
     def __init__(self,coordx,coordy,size=SQUARE_SIZE):
@@ -105,16 +80,29 @@ class Button:
         fenetre.blit(self.surface, self.rect)
         print(f'Button created at ({coordx}, {coordy}), rect: {self.rect}')
 
+
+def get_chess_notation(i):
+    lettres = ["A","B","C","D","E","F","G","H"]
+    nombres = ["1","2","3","4","5","6","7","8"]
+    chess_notation = []
+    for lettre in lettres:
+        for chiffre in nombres:
+            chess_notation.append(lettre + chiffre)
+    return chess_notation[i]
+
 # Ne pas mettre ce qui suit dans une fonction, sinon les variables créées seront locales
-#
-cpt_button = 0
+
+cpt_button = -1
 for i in range(8):
     coordy = HEIGHT - i * SQUARE_SIZE
+
     for j in range(8):
         cpt_button += 1
         coordx = SQUARE_SIZE*j
-        exec(f'button{cpt_button}= Button({coordx},{coordy})')
-                                
+        nom_button = f'button{get_chess_notation(cpt_button)}' ; globals()[nom_button] = Button(coordx,coordy)
+        #exec(f'button{get_chess_notation(cpt_button)}= Button({coordx},{coordy})')
+
+# Balise du message au dessus                              
 
 class Piece:
     def __init__(self, color):
@@ -229,10 +217,10 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                cpt_clic = 0
-                for i in range(1,65):
-                    cpt_clic += 1
-                    exec(f'if button{cpt_clic}.rect.collidepoint(event.pos): afficher_message("Le bouton a été cliqué!")')
+                for i in range(64):
+                    nom_button = get_chess_notation(i)
+                    if globals()['button' + nom_button].rect.collidepoint(event.pos): afficher_message(f"La case {nom_button} a été cliqué!")
+                    
 
     pygame.display.flip()
     draw_board()
