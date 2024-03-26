@@ -100,7 +100,6 @@ for i in range(8):
         cpt_button += 1
         coordx = SQUARE_SIZE*j
         nom_button = f'button{get_chess_notation(cpt_button)}' ; globals()[nom_button] = Button(coordx,coordy)
-        #exec(f'button{get_chess_notation(cpt_button)}= Button({coordx},{coordy})')
 
 # Balise du message au dessus                              
 
