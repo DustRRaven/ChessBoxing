@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import sys
+import os
 
 # Constantes
 
@@ -106,79 +107,66 @@ for i in range(8):
 # Balise du message au dessus                              
 
 class Piece:
-    def __init__(self, color):
+    def __init__(self, color, texture):
         self.color = color
+        self.texture_path = os.path.join("images", texture)
 
-"""
-class Pion:
-    def __init__(self, color, position):
-        self.position = position #position  == [axe des y, axe des x]
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
-        
-        pass
-    def mouvements_pion(self, nouv_position):
-        if Echiquier.case_vide(nouv_position):
-            if self.color == 'white':
-                if tour == 1: #on ne peut aller que devant et on peut avancer de 1 ou 2 cases au tour 1
-                    if nouv_position == ([2],self.position[1]) or nouv_position == ([3],self.position[1]) :
-                        self.position = nouv_position
-                else:  #si on est pas au tour 1
-                    if nouv_position == (self.position[0]+1,self.position[1]): #cas ou on veut juste avancer d'une case
-                        self.position = nouv_position
-                    if nouv_position == (self.position[0]+1,self.position[1]-1) or (self.position[0]+1,self.position[1]+1): #cas ou on veut prendre une piece
-                        # si éqyuipe adverse on rpend le pion  nouv position
-                        if self.color not in Echiquier.self.board[nouv_position[0],[nouv_position[1]]]:
-                            self.board[nouv_position[0], nouv_position[1]] = Pion(self.color, nouv_position)                          
-                            self.board[self.position[0], self.position[1]] = None
-            else:
-                if tour == 1: #on ne peut aller que devant et on peut avancer de 1 ou 2 cases au tour 1
-                    if nouv_position == ([5],self.position[1]) or nouv_position == ([4],self.position[1]) :
-                        self.position = nouv_position
-                else:  #si on est pas au tour 1
-                    if nouv_position == (self.position[0]-1,self.position[1]): #cas ou on veut juste avancer d'une case
-                        self.position = nouv_position
-                    if nouv_position == (self.position[0]-1,self.position[1]-1) or (self.position[0]-1,self.position[1]+1): #cas ou on veut prendre une piece
-                        # si équipe adverse on rpend le pion  nouv position
-                        if self.color not in Echiquier.self.board[nouv_position[0],[nouv_position[1]]]:
-                            self.board[nouv_position[0], nouv_position[1]] = Pion(self.color, nouv_position)
-                            self.board[self.position[0], self.position[1]] = None
-"""
 
-class Tour:
-    def __init__(self, team, position):
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
+    def move(self, new_position):
         
         pass
 
-class Cavalier:
-    def __init__(self, team, position):
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
+
+class Pion(Piece):
+    def __init__(self, color, texture):
+        super().__init__(color, texture)
+        self.texture = pygame.image.load(self.texture_path)
+
+    def move(self, new_position):
         
         pass
-
-class Fou:
-    def __init__(self, team, position):
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
         
+        
+
+class Tour(Piece):
+    def __init__(self, color, texture):
+        super().__init__(color, texture)
+        self.texture = pygame.image.load(self.texture_path)
+
+    def move(self, new_position):
+        
+        pass 
+
+class Cavalier(Piece):
+    def __init__(self, color, texture):
+        super().__init__(color, texture)
+        self.texture = pygame.image.load(self.texture_path)
+
+    def move(self, new_position):
         pass
 
-class Reine:
-    def __init__(self, team, position):
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
-        
+class Fou(Piece):
+    def __init__(self, color, texture):
+        super().__init__(color, texture)
+        self.texture = pygame.image.load(self.texture_path)
+
+    def move(self, new_position):
+        pass
+
+class Reine(Piece):
+    def __init__(self, color, texture):
+        super().__init__(color, texture)
+        self.texture = pygame.image.load(self.texture_path)
+
+    def move(self, new_position):
         pass
     
-class Fou:
-    def __init__(self, team, position):
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
-        
-        pass
+class Roi(Piece):
+    def __init__(self, color, texture):
+        super().__init__(color, texture)
+        self.texture = pygame.image.load(self.texture_path)
 
-
-class Roi:
-    def __init__(self, color, position):
-        #self.image = pygame.image.load(f'images/{color}_pawn.png')
-        
+    def move(self, new_position):
         pass
     
 
