@@ -84,7 +84,6 @@ def get_chess_notation(i):
             chess_notation.append(lettre + chiffre)
     return chess_notation[i]
 
-
 # Ne pas mettre ce qui suit dans une fonction, sinon les variables créées seront locales
 
 cpt_button = -1
@@ -98,72 +97,46 @@ for i in range(8):
 
 # Balise du message au dessus                              
 
-def mouvement_légal(mouvement): #mouvement est un string contenant la position sur l'échiquier (comme get_chess_notation() )
-    for i in range(64):
-        if get_chess_notation(i) == mouvement:
-            return True
-    return False
-
 class Piece:
     def __init__(self, color, texture):
         self.color = color
         self.texture_path = os.path.join("images", texture)
-
+        self.texture = pygame.image.load(self.texture_path)
+        self.rect = self.texture.get_rect()
 
     def move(self, new_position):
-        if mouvement_légal(new_position):
-            if tour ==1
-
+        self.rect.center = new_position
+        pass
 
 
 class Pion(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        self.texture = pygame.image.load(self.texture_path)
-
-    def move(self, new_position): # Un pion êut avancer de 1 ou 2 cases au premier tour, il peut aussi attaquer et prendre une pièce adverse dans un coin supérieur
-        ()
+        
+        
+        pass
+        
+        
 
 class Tour(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        self.texture = pygame.image.load(self.texture_path)
-
-    def move(self, new_position):
-        
-        pass 
 
 class Cavalier(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        self.texture = pygame.image.load(self.texture_path)
-
-    def move(self, new_position):
-        pass
 
 class Fou(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        self.texture = pygame.image.load(self.texture_path)
-
-    def move(self, new_position):
-        pass
 
 class Reine(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        self.texture = pygame.image.load(self.texture_path)
-
-    def move(self, new_position):
-        pass
     
 class Roi(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        self.texture = pygame.image.load(self.texture_path)
-
-    def move(self, new_position):
-        pass
     
 
 class Echiquier:
@@ -172,12 +145,11 @@ class Echiquier:
         self.populate_board()
     
     def populate_board(self):
-   
         # Dictionnaire contenant les pièces de départ et leurs position
         
         for pion in range(7):
-            nom_piece = f"Wpion{pion}"
-            globals()[nom_piece] = Pion(W,)
+            nom_piece = f"Wpion{pion}" ; globals()[nom_piece] = Pion(W,"piw.png")
+            nom_piece = f"Bpion{pion}" ; globals()[nom_piece] = Pion(B,"pib.png")
 
             pass
         for tour in range(1):
@@ -196,16 +168,8 @@ class Echiquier:
 
             pass
 
-        positions_pieces = {}       
-
-        
-    def mouvements(self, nouv_postion):
-        self.position = nouv_postion
-    
-    def case_vide(self, pos):
-        if pos == None:
-            return True
-        return False
+        positions_pieces = {}    
+        pass
 
 
 class Jeu:
