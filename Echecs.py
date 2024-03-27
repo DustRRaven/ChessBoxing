@@ -44,21 +44,12 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 running = True
 dt = 0
+tour = 0
 current_player = W
 pygame.display.set_caption('Echecs')
 font = pygame.font.SysFont(None, 30)
 fenetre = pygame.display.set_mode((WIDTH, HEIGHT))
 
-
-
-def position_piece(piece, abscisse, ordonnee):
-    if abscisse <= 7 or ordonnee <= 7:
-        piece[0] = abscisse*(800/8)
-        piece[1] = ordonnee*(600/8)
-    if abscisse > 7 or ordonnee > 7:
-        print("Erreur de données en ordonnee et/ou en abscisse")
-        piece[0] = 0
-        piece[1] = 0
 
 def afficher_message(message):
     fenetre.fill(BLACK)  # Efface l'écran
@@ -181,10 +172,33 @@ class Echiquier:
         self.populate_board()
     
     def populate_board(self):
-        starting_pieces = {}
+   
+        # Dictionnaire contenant les pièces de départ et leurs position
         
-        pass
+        for pion in range(7):
+            nom_piece = f"Wpion{pion}"
+            globals()[nom_piece] = Pion(W,)
 
+            pass
+        for tour in range(1):
+
+            pass
+        for caval in range(1):
+
+            pass
+        for fou in range(1):
+
+            pass
+        for roi in range(0):
+
+            pass
+        for reines in range(0):
+
+            pass
+
+        positions_pieces = {}       
+
+        
     def mouvements(self, nouv_postion):
         self.position = nouv_postion
     
@@ -198,6 +212,7 @@ class Jeu:
     def __init__(self):
         None
 
+chessboard = {}
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
