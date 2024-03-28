@@ -74,6 +74,11 @@ class Button:
         fenetre.blit(self.surface, self.rect)
         print(f'Button created at ({coordx}, {coordy}), rect: {self.rect}')
 
+def mouvement_legal(mouvement):
+    a = get_tab_list()
+    if mouvement not in a:
+        return False
+    return True
 
 def get_chess_notation(i):
     lettres = ["A","B","C","D","E","F","G","H"]
@@ -83,6 +88,28 @@ def get_chess_notation(i):
         for chiffre in nombres:
             chess_notation.append(lettre + chiffre)
     return chess_notation[i]
+
+
+
+def get_tab_list():
+    lettres = ["A","B","C","D","E","F","G","H"]
+    nombres = ["1","2","3","4","5","6","7","8"]
+    chess_notation = []
+    for lettre in lettres:
+        for chiffre in nombres:
+            chess_notation.append(lettre + chiffre)
+    return chess_notation
+
+def get_index_position(position):
+    a = get_tab_list()
+    for i in range(len(a)):
+        if position == a[i]:
+            return i
+        
+print(get_index_position("A1"))
+print(get_index_position("B1"))
+
+
 
 # Ne pas mettre ce qui suit dans une fonction, sinon les variables créées seront locales
 
@@ -103,28 +130,62 @@ class Piece:
         self.texture_path = os.path.join("images", texture)
         self.texture = pygame.image.load(self.texture_path)
         self.rect = self.texture.get_rect()
-
     def move(self, new_position):
         self.rect.center = new_position
         pass
 
 
+
 class Pion(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        
-        
         pass
-        
-        
+        self.texture = pygame.image.load(self.texture_path)
+
+    def move(self,position, new_position):# Un pion êut avancer de 1 ou 2 cases au premier tour, il peut aussi attaquer et prendre une pièce adverse dans un coin supérieur, new_position est un tring tel 'A1'
+        if mouvement_legal(new_position):
+            if self.color == 'white':
+                tab = get_tab_list()
+                if tour == 1:
+                    if (get_index_position(new_position) == get_index_position(position)+8 or get_index_position(position)+16) and new_position != position:
+                        position = new_position
+                else:
+                    if get_index_position(new_position) == get_index_position(position)+8 and new_position != position:
+                        () # attendre échquier, faire en sorte que new_position n'ai pas de pion, puis attaque à faire + BLACK
+
+
 
 class Tour(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
+        self.texture = pygame.image.load(self.texture_path)
+
+    def move(self, new_position, position):
+        if mouvement_legal(new_position):
+            if (position[1] == new_position[1] or position[0] == new_position[0]) and new_position != position :
+                    position = new_position
+
+                    #regarder collision sur le lignes
+                        
+
+
+        
+
 
 class Cavalier(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
+        self.texture = pygame.image.load(self.texture_path)
+
+    def move(self, position, new_position):
+        if mouvement_legal(new_position):
+            tab = get_tab_list()
+            b = get_index_position(new_position)
+            a = get_index_position(position)
+            if b == a+6 or b == a+10 or b == a+10 or b == a+15 or b == a+17 or b==a-6 or b==a-10 or b==a-15 or b==a-17:
+                position = new_position
+
+
 
 class Fou(Piece):
     def __init__(self, color, texture):
