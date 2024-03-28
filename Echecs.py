@@ -154,16 +154,17 @@ def populate_board():
     for pion in range(2):
         nom_button = None
         clr = color_team[pion]
+        print(clr)
         path = None
         for team in range(8):
-            if clr==0:  nom_button = f'button{get_chess_notation(BOARD_L+team)}'             ; path = "piw.png"
-            else:       nom_button = f'button{get_chess_notation(BOARD_A - 2*BOARD_L+team)}' ; path = "pib.png"
+            if clr==W : nom_button = f'button{get_chess_notation(BOARD_L+team)}'             ; path = "piw.png"
+            else :      nom_button = f'button{get_chess_notation(BOARD_A - 2*BOARD_L+team)}' ; path = "pib.png"
             coord_piece = globals()[nom_button].rect.center
-            nom_piece = f"{clr}pion{team}" ; globals()[nom_piece] = Pion(W, path) ; globals()[nom_piece].move(coord_piece)
+            nom_piece = f"{clr}pion{team}" ; globals()[nom_piece] = Pion(color_team[pion], path) ; globals()[nom_piece].move(coord_piece)
             liste_sprites.append(globals()[nom_piece])
-            noms_sprites.append(nom_piece)
-    print(noms_sprites)
-    
+            #noms_sprites.append(nom_piece)
+            #print(nom_piece)
+    #print(noms_sprites)
     for tour in range(1):
 
         pass
