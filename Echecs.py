@@ -109,7 +109,19 @@ def get_index_position(position):
 print(get_index_position("A1"))
 print(get_index_position("B1"))
 
+'''def populate_board():
+    # Dictionnaire contenant les pièces de départ et leurs position
 
+    for pion in range(2):
+        nom_button = None
+        clr = color_team[pion]
+        path = None
+        for team in range(8):
+            if clr==0:  nom_button = f'button{get_chess_notation(BOARD_L+team)}'             ; path = "piw.png"
+            else:       nom_button = f'button{get_chess_notation(BOARD_A - 2*BOARD_L+team)}' ; path = "pib.png"
+            coord_piece = globals()[nom_button].rect.center
+            nom_piece = f"{clr}pion{team}" ; globals()[nom_piece] = Pion(color_team[pion], path) ; globals()[nom_piece].move(coord_piece)
+            liste_sprites.append(globals()[nom_piece])'''
 
 # Ne pas mettre ce qui suit dans une fonction, sinon les variables créées seront locales
 
@@ -257,3 +269,4 @@ while running:
 
 pygame.quit()
 sys.exit()
+
