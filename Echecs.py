@@ -165,7 +165,7 @@ def populate_board():
             coord_piece = globals()[nom_button].rect.center
             nom_piece = f"{clr}pion{team}" ; globals()[nom_piece] = Pion(color_team[pion], path) ; globals()[nom_piece].move(coord_piece)
             liste_sprites.append(globals()[nom_piece])
-            #noms_sprites.append(nom_piece)
+            noms_sprites.append(nom_piece)
             #print(nom_piece)
     #print(noms_sprites)
     for tour in range(1):
