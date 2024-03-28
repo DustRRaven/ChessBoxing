@@ -39,7 +39,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 running = True
 dt = 0
-tour = 0
+tour = 1
 current_player = W
 pygame.display.set_caption('Echecs')
 font = pygame.font.SysFont(None, 30)
@@ -93,7 +93,10 @@ for i in range(8):
 
 
 def is_valid_move(button_clicked, piece):
-    pass
+    piece_type = type(piece).__name__
+    if piece_type==Pion:
+        pass
+    return True
 
 
 class Piece:
@@ -160,7 +163,7 @@ def populate_board():
     # pour la suite voir fin de la fonction populate_board()
     for board in range(64):
         nom_board = get_chess_notation(board) ; nom_board_o =  globals()['button' + nom_board]
-        chessboard.update({nom_board:None})
+        chessboard.update({nom_board_o:None})
 
     for pion in range(2):
         nom_button = None
@@ -229,14 +232,13 @@ def populate_board():
     #   nom_case_ob  par  nom_case  et  comp_piece  par  nom_piece_solo  merci de bien remettre après
  
     for case in range(64):
-        nom_case = get_chess_notation(case) ; nom_case_ob = globals()['button' + nom_case]
+        nom_case = get_chess_notation(case) ; nom_case_ob = liste_buttons[case]
         for piece in range(len(noms_sprites)):
             nom_piece_solo = noms_sprites[piece]
             comp_piece=liste_sprite_pieces[piece]
             if comp_piece.rect.center == nom_case_ob.rect.center:
                 print(f'{nom_piece_solo} est en case {nom_case}')
                 chessboard.update({nom_case_ob:comp_piece})
-    #print(chessboard)
 
 
 class Jeu:
@@ -244,6 +246,9 @@ class Jeu:
         None
 
 populate_board()
+#print(chessboard)
+selected_piece = []
+
 
 while running:
     for event in pygame.event.get():
@@ -252,11 +257,33 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 for i in range(64):
-                    nom_button = get_chess_notation(i)
-                    if globals()['button' + nom_button].rect.collidepoint(event.pos):
+                    button_id = liste_buttons[i]
+                    nom_button = get_chess_notation(i) 
+                    if button_id.rect.collidepoint(event.pos):
+                        
                         afficher_message(f'La case {nom_button}, ({i}) a été cliqué!')
-                        current_player = B if current_player == W else W
+                        if len(selected_piece) == 0 and chessboard[button_id] != None and chessboard[button_id].color == current_player:
+                            previous_pos = button_id ; selected_piece.append(chessboard[button_id]) ; print('choix piece')
+                            print(f'liste piece selectionnée{selected_piece}') ; print(f'dico board{chessboard[button_id]}')
+                        elif len(selected_piece) == 0 and chessboard[button_id] == None:
+                            print('case vide')
+                        elif len(selected_piece) == 0 and chessboard[button_id].color != current_player:
+                            print('case ennemie')
+                        else:
+                            if is_valid_move(button_id,chessboard[button_id]) == True:
+                                print('mouvement')
+                                if selected_piece[0].rect.center != button_id.rect.center:
+                                    selected_piece[0].move(button_id.rect.center)
+                                    chessboard[button_id] = selected_piece[0]
+                                    chessboard[previous_pos] = None
+                                    print(f'liste piece selectionnée{selected_piece}')
+                                    selected_piece.pop()
+                                    print(f'liste piece selectionnée{selected_piece}')
+                                else: selected_piece.pop()
+                            if current_player == W : current_player = B ; print(current_player)
+                            else: current_player = W ; tour +=1 ; print(f'{current_player} ;',f'tour: {tour}')
                     
+                        
 
     pygame.display.flip()
     draw_board()
