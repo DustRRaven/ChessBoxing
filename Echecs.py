@@ -78,7 +78,7 @@ def get_chess_notation(i):
     return chess_notation[i]
 
 # Ne pas mettre ce qui suit dans une fonction, sinon les variables créées seront locales
-
+liste_buttons = []
 cpt_button = -1
 for i in range(8):
     coordy = HEIGHT - i * SQUARE_SIZE - SQUARE_SIZE//2
@@ -87,8 +87,14 @@ for i in range(8):
         cpt_button += 1
         coordx = j*SQUARE_SIZE + SQUARE_SIZE//2
         nom_button = f'button{get_chess_notation(cpt_button)}' ; globals()[nom_button] = Button(coordx,coordy)
+        liste_buttons.append(globals()[nom_button])
 
-# Balise du message au dessus                              
+# Balise du message au dessus
+
+
+def is_valid_move(button_clicked, piece):
+    pass
+
 
 class Piece:
     def __init__(self, color, texture):
@@ -104,7 +110,6 @@ class Piece:
 
     def draw(self):
         fenetre.blit(self.texture, self.rect)
-
 
 class Pion(Piece):
     def __init__(self, color, texture):
@@ -137,7 +142,7 @@ class Reine(Piece):
     def move(self, coord):
         super().move(coord)
 
-    class Roi(Piece):
+class Roi(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
     def move(self, coord):
