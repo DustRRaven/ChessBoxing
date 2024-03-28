@@ -153,7 +153,6 @@ liste_sprites = []
 noms_sprites  = []
 
 def populate_board():
-    # Dictionnaire contenant les pièces de départ et leurs position
     
     for pion in range(2):
         nom_button = None
