@@ -149,11 +149,17 @@ class Roi(Piece):
     def move(self, coord):
         super().move(coord)
     
-liste_sprites = []
+liste_sprite_pieces = []
 noms_sprites  = []
+chessboard = {}
 
 def populate_board():
-    
+    # Association des cases aux pièces (None ici car aucunes pièces au départ)
+    # pour la suite voir fin de la fonction populate_board()
+    for board in range(64):
+        nom_board = get_chess_notation(board) ; nom_board_o =  globals()['button' + nom_board]
+        chessboard.update({nom_board:None})
+
     for pion in range(2):
         nom_button = None
         clr = color_team[pion]
@@ -164,7 +170,7 @@ def populate_board():
             else :      nom_button = f'button{get_chess_notation(BOARD_A - 2*BOARD_L+team)}' ; path = "pib.png"
             coord_piece = globals()[nom_button].rect.center
             nom_piece = f"{clr}pion{team}" ; globals()[nom_piece] = Pion(color_team[pion], path) ; globals()[nom_piece].move(coord_piece)
-            liste_sprites.append(globals()[nom_piece])
+            liste_sprite_pieces.append(globals()[nom_piece])
             noms_sprites.append(nom_piece)
             #print(nom_piece)
     #print(noms_sprites)
@@ -184,18 +190,32 @@ def populate_board():
 
         pass
 
-    #positions_pieces = {}
+    # Suite du dico, comparaison de chaque coordonnées de case avec chaque coordonnées de pièce
+    # Si mêmes coordonnées alors association des deux dans le dico chessboard{},
+    # Pour mieux voir l'effet dans la console, remplacer dans chessboard.update
+    #   nom_case_ob  par  nom_case  et  comp_piece  par  nom_piece_solo  merci de bien remettre après
+ 
+    for case in range(64):
+        nom_case = get_chess_notation(case) ; nom_case_ob = globals()['button' + nom_case]
+        for piece in range(len(noms_sprites)):
+            nom_piece_solo = noms_sprites[piece]
+            comp_piece=liste_sprite_pieces[piece]
+            if comp_piece.rect.center == nom_case_ob.rect.center:
+                print(f'{nom_piece_solo} est en case {nom_case}')
+                chessboard.update({nom_case_ob:comp_piece})
+    print(chessboard)
+
+
+
 
 
 class Jeu:
     def __init__(self):
         None
 
-chessboard = {}
 
 populate_board()
 
-#print(liste_sprites)
 
 while running:
     for event in pygame.event.get():
@@ -214,7 +234,7 @@ while running:
     draw_board()
     
     
-    for sprite in liste_sprites:
+    for sprite in liste_sprite_pieces:
         sprite.draw()
     
     clock.tick(60)
