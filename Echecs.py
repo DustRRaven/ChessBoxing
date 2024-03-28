@@ -3,9 +3,6 @@ from pygame.locals import *
 import sys
 import os
 
-# Constantes
-
-
 
 ## Définition des couleurs
 WHITE = (255, 255, 255)
@@ -14,11 +11,10 @@ BROWN = (107, 68, 35)
 BEIGE = (205, 205, 180)
 
 
-W = 0
-B = 1
+W = 'W'
+B = 'B'
 
-colours = {B: BLACK, W: WHITE}
-
+color_team = [W, B]
 
 
 ## Définition des dimensions de la fenêtre, vérification que la variable SQUARE_SIZE sera impair pour avoir son centre parfait
@@ -28,14 +24,13 @@ while min(WIDTH // 8, HEIGHT //8) % 2 != 1:
     elif WIDTH > HEIGHT     : HEIGHT -= 1
     else                    : WIDTH-=1 ; HEIGHT-=1
 
-## Définition de la taille de la case
+## Définition de la taille de la case et des variables désignant les mesures de l'échiquier
 
 SQUARE_SIZE = min(WIDTH // 8, HEIGHT // 8)
 EMPTY_WIDTH = WIDTH - HEIGHT
 
-## Inutile : TILESIZE  = 100
-MAPWIDTH  = 8
-MAPHEIGHT = 8
+BOARD_L = 8
+BOARD_A = 64
 
 
 # pygame setup
@@ -49,6 +44,7 @@ current_player = W
 pygame.display.set_caption('Echecs')
 font = pygame.font.SysFont(None, 30)
 fenetre = pygame.display.set_mode((WIDTH, HEIGHT))
+sprites = pygame.sprite.Group()
 
 
 def afficher_message(message):
@@ -70,9 +66,8 @@ class Button:
     def __init__(self,coordx,coordy,size=SQUARE_SIZE):
         self.surface = pygame.Surface((SQUARE_SIZE, SQUARE_SIZE))
         self.rect = self.surface.get_rect(center=(coordx,coordy))
-        #self.surface.fill(GRAY)
         fenetre.blit(self.surface, self.rect)
-        print(f'Button created at ({coordx}, {coordy}), rect: {self.rect}')
+        print(f'Button created at ({coordx}, {coordy}), rect: {self.rect.center}')
 
 
 def get_chess_notation(i):
@@ -101,96 +96,93 @@ class Piece:
     def __init__(self, color, texture):
         self.color = color
         self.texture_path = os.path.join("images", texture)
+        self.texture = pygame.image.load(self.texture_path)
+        self.texture = pygame.transform.smoothscale(self.texture, (SQUARE_SIZE, SQUARE_SIZE))
+        self.rect = self.texture.get_rect(center=(0, 0))
 
 
-    def move(self, new_position):
-        
+    def move(self, coord):
+        self.rect.center = coord
         pass
+
+    def draw(self):
+        fenetre.blit(self.texture, self.rect)
 
 
 class Pion(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        self.texture = pygame.image.load(self.texture_path)
-
-    def move(self, new_position):
-        
-        pass
-        
-        
+    def move(self, coord):
+        super().move(coord)      
 
 class Tour(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        self.texture = pygame.image.load(self.texture_path)
-
-    def move(self, new_position):
-        
-        pass 
+    def move(self, coord):
+        super().move(coord)
 
 class Cavalier(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        self.texture = pygame.image.load(self.texture_path)
-
-    def move(self, new_position):
-        pass
+    def move(self, coord):
+        super().move(coord)
 
 class Fou(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        self.texture = pygame.image.load(self.texture_path)
-
-    def move(self, new_position):
-        pass
+    def move(self, coord):
+        super().move(coord)
 
 class Reine(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        self.texture = pygame.image.load(self.texture_path)
-
-    def move(self, new_position):
-        pass
+    def move(self, coord):
+        super().move(coord)
     
 class Roi(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
-        self.texture = pygame.image.load(self.texture_path)
-
-    def move(self, new_position):
-        pass
+    def move(self, coord):
+        super().move(coord)
     
+liste_sprites = []
+noms_sprites  = []
 
-class Echiquier:
-    def __init__(self):
-        self.board = [[None] * 8 for _ in range(8)]
-        self.populate_board()
+def populate_board():
+    # Dictionnaire contenant les pièces de départ et leurs position
     
-    def populate_board(self):
-        # Dictionnaire contenant les pièces de départ et leurs position
-        
-        for pion in range(7):
-            nom_piece = f"Wpion{pion}" ; globals()[nom_piece] = Pion(W,"piw.png")
+    for pion in range(2):
+        nom_button = None
+        clr = color_team[pion]
+        path = None
+        for team in range(8):
+            if clr==0:  nom_button = f'button{get_chess_notation(BOARD_L+team)}'             ; path = "piw.png"
+            else:       nom_button = f'button{get_chess_notation(BOARD_A - 2*BOARD_L+team)}' ; path = "pib.png"
+            coord_piece = globals()[nom_button].rect.center
+            nom_piece = f"{clr}pion{team}" ; globals()[nom_piece] = Pion(W, path) ; globals()[nom_piece].move(coord_piece)
+            liste_sprites.append(globals()[nom_piece])
+            noms_sprites.append(nom_piece)
+    print(noms_sprites)
+    
+    for tour in range(1):
 
-            pass
-        for tour in range(1):
-
-            pass
-        for caval in range(1):
-
-            pass
-        for fou in range(1):
-
-            pass
-        for roi in range(0):
-
-            pass
-        for reines in range(0):
-
-            pass
-
-        positions_pieces = {}    
         pass
+    for caval in range(1):
+
+        pass
+    for fou in range(1):
+
+        pass
+    for roi in range(0):
+
+        pass
+    for reines in range(0):
+
+        pass
+
+    
+    #positions_pieces = {}
+    
 
 
 class Jeu:
@@ -198,6 +190,11 @@ class Jeu:
         None
 
 chessboard = {}
+
+populate_board()
+
+#print(liste_sprites)
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -207,12 +204,17 @@ while running:
                 for i in range(64):
                     nom_button = get_chess_notation(i)
                     if globals()['button' + nom_button].rect.collidepoint(event.pos):
-                        afficher_message(f"La case {nom_button} a été cliqué!")
+                        afficher_message(f"La case {nom_button}, ({i}) a été cliqué!")
                         current_player = B if current_player == W else W
                     
 
     pygame.display.flip()
     draw_board()
+    
+    
+    for sprite in liste_sprites:
+        sprite.draw()
+    
     clock.tick(60)
 
 pygame.quit()
