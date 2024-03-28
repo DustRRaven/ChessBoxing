@@ -60,7 +60,6 @@ def draw_board():
         for col in range(8):
             color = BEIGE if (row + col) % 2 == 0 else BROWN
             pygame.draw.rect(screen, color, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
-            
 
 class Button:
     def __init__(self,coordx,coordy,size=SQUARE_SIZE):
@@ -68,7 +67,6 @@ class Button:
         self.rect = self.surface.get_rect(center=(coordx,coordy))
         fenetre.blit(self.surface, self.rect)
         print(f'Button created at ({coordx}, {coordy}), rect: {self.rect.center}')
-
 
 def get_chess_notation(i):
     lettres = ['A','B','C','D','E','F','G','H']
@@ -121,13 +119,11 @@ class Tour(Piece):
     def move(self, coord):
         super().move(coord)
 
-
 class Cavalier(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
     def move(self, coord):
         super().move(coord)
-
 
 class Fou(Piece):
     def __init__(self, color, texture):
@@ -135,20 +131,19 @@ class Fou(Piece):
     def move(self, coord):
         super().move(coord)
 
-
 class Reine(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
     def move(self, coord):
         super().move(coord)
 
-    
-class Roi(Piece):
+    class Roi(Piece):
     def __init__(self, color, texture):
         super().__init__(color, texture)
     def move(self, coord):
         super().move(coord)
-    
+
+
 liste_sprite_pieces = []
 noms_sprites  = []
 chessboard = {}
@@ -237,16 +232,11 @@ def populate_board():
     #print(chessboard)
 
 
-
-
-
 class Jeu:
     def __init__(self):
         None
 
-
 populate_board()
-
 
 while running:
     for event in pygame.event.get():
@@ -263,7 +253,6 @@ while running:
 
     pygame.display.flip()
     draw_board()
-    
     
     for sprite in liste_sprite_pieces:
         sprite.draw()
