@@ -71,8 +71,8 @@ class Button:
 
 
 def get_chess_notation(i):
-    lettres = ["A","B","C","D","E","F","G","H"]
-    nombres = ["1","2","3","4","5","6","7","8"]
+    lettres = ['A','B','C','D','E','F','G','H']
+    nombres = ['1','2','3','4','5','6','7','8']
     chess_notation = []
     for lettre in lettres:
         for chiffre in nombres:
@@ -95,7 +95,7 @@ for i in range(8):
 class Piece:
     def __init__(self, color, texture):
         self.color = color
-        self.texture_path = os.path.join("images", texture)
+        self.texture_path = os.path.join('images', texture)
         self.texture = pygame.image.load(self.texture_path)
         self.texture = pygame.transform.smoothscale(self.texture, (SQUARE_SIZE, SQUARE_SIZE))
         self.rect = self.texture.get_rect(center=(0, 0))
@@ -166,29 +166,60 @@ def populate_board():
         print(clr)
         path = None
         for team in range(8):
-            if clr==W : nom_button = f'button{get_chess_notation(BOARD_L+team)}'             ; path = "piw.png"
-            else :      nom_button = f'button{get_chess_notation(BOARD_A - 2*BOARD_L+team)}' ; path = "pib.png"
+            if clr==W : nom_button = f'button{get_chess_notation(BOARD_L+team)}'             ; path = 'piw.png'
+            else :      nom_button = f'button{get_chess_notation(BOARD_A - 2*BOARD_L+team)}' ; path = 'pib.png'
             coord_piece = globals()[nom_button].rect.center
-            nom_piece = f"{clr}pion{team}" ; globals()[nom_piece] = Pion(color_team[pion], path) ; globals()[nom_piece].move(coord_piece)
+            nom_piece = f'{clr}pion{team}' ; globals()[nom_piece] = Pion(color_team[pion], path) ; globals()[nom_piece].move(coord_piece)
             liste_sprite_pieces.append(globals()[nom_piece])
             noms_sprites.append(nom_piece)
-            #print(nom_piece)
-    #print(noms_sprites)
-    for tour in range(1):
 
-        pass
-    for caval in range(1):
+    for tour in range(2):
+        clr = color_team[tour]
+        for team in range(2):
+           if clr==W : nom_button = f'button{get_chess_notation(0+team*(BOARD_L-1))}'       ; path = 'tow.png'
+           else :      nom_button = f'button{get_chess_notation(56+team*(BOARD_L-1))}'      ; path = 'tob.png'
+           coord_piece = globals()[nom_button].rect.center
+           nom_piece = f'{clr}tour{team}' ; globals()[nom_piece] = Tour(color_team[tour], path) ; globals()[nom_piece].move(coord_piece)
+           liste_sprite_pieces.append(globals()[nom_piece])
+           noms_sprites.append(nom_piece)
 
-        pass
-    for fou in range(1):
+    for caval in range(2):
+        clr = color_team[caval]
+        for team in range(2):
+           if clr==W : nom_button = f'button{get_chess_notation(1+team*(BOARD_L-3))}'       ; path = 'caw.png'
+           else :      nom_button = f'button{get_chess_notation(57+team*(BOARD_L-3))}'      ; path = 'cab.png'
+           coord_piece = globals()[nom_button].rect.center
+           nom_piece = f'{clr}cavalier{team}' ; globals()[nom_piece] = Cavalier(color_team[caval], path) ; globals()[nom_piece].move(coord_piece)
+           liste_sprite_pieces.append(globals()[nom_piece])
+           noms_sprites.append(nom_piece)
 
-        pass
-    for roi in range(0):
+    for fou in range(2):
+        clr = color_team[fou]
+        for team in range(2):
+           if clr==W : nom_button = f'button{get_chess_notation(2+team*(BOARD_L-5))}'       ; path = 'fow.png'
+           else :      nom_button = f'button{get_chess_notation(58+team*(BOARD_L-5))}'      ; path = 'fob.png'
+           coord_piece = globals()[nom_button].rect.center
+           nom_piece = f'{clr}fou{team}' ; globals()[nom_piece] = Fou(color_team[fou], path) ; globals()[nom_piece].move(coord_piece)
+           liste_sprite_pieces.append(globals()[nom_piece])
+           noms_sprites.append(nom_piece)
 
-        pass
-    for reines in range(0):
+    for reine in range(2):
+        clr = color_team[reine]
+        if clr==W : nom_button = f'button{get_chess_notation(3)}'  ; path = 'rew.png'
+        else :      nom_button = f'button{get_chess_notation(59)}' ; path = 'reb.png'
+        coord_piece = globals()[nom_button].rect.center
+        nom_piece = f'{clr}reine0' ; globals()[nom_piece] = Reine(color_team[reine], path) ; globals()[nom_piece].move(coord_piece)
+        liste_sprite_pieces.append(globals()[nom_piece])
+        noms_sprites.append(nom_piece)
 
-        pass
+    for roi in range(2):
+        clr = color_team[roi]
+        if clr==W : nom_button = f'button{get_chess_notation(4)}'  ; path = 'row.png'
+        else :      nom_button = f'button{get_chess_notation(60)}' ; path = 'rob.png'
+        coord_piece = globals()[nom_button].rect.center
+        nom_piece = f'{clr}roi0' ; globals()[nom_piece] = Roi(color_team[roi], path) ; globals()[nom_piece].move(coord_piece)
+        liste_sprite_pieces.append(globals()[nom_piece])
+        noms_sprites.append(nom_piece)
 
     # Suite du dico, comparaison de chaque coordonnées de case avec chaque coordonnées de pièce
     # Si mêmes coordonnées alors association des deux dans le dico chessboard{},
@@ -203,7 +234,7 @@ def populate_board():
             if comp_piece.rect.center == nom_case_ob.rect.center:
                 print(f'{nom_piece_solo} est en case {nom_case}')
                 chessboard.update({nom_case_ob:comp_piece})
-    print(chessboard)
+    #print(chessboard)
 
 
 
@@ -226,7 +257,7 @@ while running:
                 for i in range(64):
                     nom_button = get_chess_notation(i)
                     if globals()['button' + nom_button].rect.collidepoint(event.pos):
-                        afficher_message(f"La case {nom_button}, ({i}) a été cliqué!")
+                        afficher_message(f'La case {nom_button}, ({i}) a été cliqué!')
                         current_player = B if current_player == W else W
                     
 
