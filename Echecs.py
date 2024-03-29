@@ -43,7 +43,7 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 tour = 1
-current_player = B
+current_player = W
 pygame.display.set_caption('Echecs')
 font = pygame.font.SysFont(None, 30)
 fenetre = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -284,10 +284,10 @@ while running:
                                     selected_piece[0].selected = False
                                     selected_piece.pop()
                                     print(f'liste piece selectionnée{selected_piece}')
-                                    """        
+                                            
                                     if current_player == W : current_player = B ; print(current_player)
                                     else: current_player = W ; tour +=1 ; print(f'{current_player} ;',f'tour: {tour}')
-                                    """
+                                    
                                 else: selected_piece[0].selected = False ; selected_piece.pop()
                             else: selected_piece[0].selected = False ; selected_piece.pop()
                         elif len(selected_piece) == 1 and chessboard[button_id] != None and chessboard[button_id].color == selected_piece[0].color:
