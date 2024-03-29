@@ -9,6 +9,8 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BROWN = (107, 68, 35)
 BEIGE = (205, 205, 180)
+BLUE  = (90, 90 , 255)
+RED   = (200,0,0)
 
 
 W = 'W'
@@ -92,11 +94,27 @@ for i in range(8):
 # Balise du message au dessus
 
 
-def is_valid_move(button_clicked, piece):
-    piece_type = type(piece).__name__
-    if piece_type==Pion:
-        pass
-    return True
+def is_valid_move(button_clicked, previous_pos, piece):
+
+    operation_symbols = {'W':'-','B':'+'}
+    op = operation_symbols.get(piece.color) 
+
+    previous_pos = list(previous_pos.rect.center)
+    button_clicked = list(button_clicked.rect.center)
+    print(type(piece).__name__)
+    piece_type = (type(piece).__name__)
+
+    if piece_type=='Pion':
+        
+        print(previous_pos)
+        print(button_clicked)
+        # ne pas oublier la première coordonnée de previous_pos, elle manque ici
+        if tour==1:
+            if button_clicked == eval(str(previous_pos[1]) + op + str(SQUARE_SIZE)) or eval(str(previous_pos[1]) + op + str(SQUARE_SIZE*2)):
+                return True
+        elif button_clicked == eval(str(previous_pos[1]) + op + str(SQUARE_SIZE)):
+            print('ok')
+            return True
 
 
 class Piece:
@@ -106,12 +124,16 @@ class Piece:
         self.texture = pygame.image.load(self.texture_path)
         self.texture = pygame.transform.smoothscale(self.texture, (SQUARE_SIZE, SQUARE_SIZE))
         self.rect = self.texture.get_rect(center=(0, 0))
-
+        self.selected = False
 
     def move(self, coord):
         self.rect.center = coord
 
     def draw(self):
+        if self.selected:
+            if self.color == W:
+                pygame.draw.rect(fenetre, BLUE, self.rect.move(0,-1), 3)
+            else: pygame.draw.rect(fenetre, RED, self.rect.move(0,-1), 3)
         fenetre.blit(self.texture, self.rect)
 
 class Pion(Piece):
@@ -260,29 +282,38 @@ while running:
                     button_id = liste_buttons[i]
                     nom_button = get_chess_notation(i) 
                     if button_id.rect.collidepoint(event.pos):
-                        
-                        afficher_message(f'La case {nom_button}, ({i}) a été cliqué!')
+                        #afficher_message(f'La case {nom_button}, ({i}) a été cliqué!')
+  
                         if len(selected_piece) == 0 and chessboard[button_id] != None and chessboard[button_id].color == current_player:
-                            previous_pos = button_id ; selected_piece.append(chessboard[button_id]) ; print('choix piece')
-                            print(f'liste piece selectionnée{selected_piece}') ; print(f'dico board{chessboard[button_id]}')
+                            previous_pos = button_id ; selected_piece.append(chessboard[button_id]) ; selected_piece[0].selected = True
+                            print('choix piece') ; print(f'liste piece selectionnée{selected_piece}') ; print(f'dico board{chessboard[button_id]}')
+
+                            
                         elif len(selected_piece) == 0 and chessboard[button_id] == None:
                             print('case vide')
+                            
                         elif len(selected_piece) == 0 and chessboard[button_id].color != current_player:
                             print('case ennemie')
-                        else:
-                            if is_valid_move(button_id,chessboard[button_id]) == True:
+                            
+                        elif len(selected_piece) == 1 and chessboard[button_id] == None:
+                            if is_valid_move(button_id, previous_pos, selected_piece[0]) == True:
                                 print('mouvement')
                                 if selected_piece[0].rect.center != button_id.rect.center:
                                     selected_piece[0].move(button_id.rect.center)
                                     chessboard[button_id] = selected_piece[0]
                                     chessboard[previous_pos] = None
                                     print(f'liste piece selectionnée{selected_piece}')
+                                    selected_piece[0].selected = False
                                     selected_piece.pop()
                                     print(f'liste piece selectionnée{selected_piece}')
-                                else: selected_piece.pop()
-                            if current_player == W : current_player = B ; print(current_player)
-                            else: current_player = W ; tour +=1 ; print(f'{current_player} ;',f'tour: {tour}')
-                    
+                                            
+                                    if current_player == W : current_player = B ; print(current_player)
+                                    else: current_player = W ; tour +=1 ; print(f'{current_player} ;',f'tour: {tour}')
+                                else: selected_piece[0].selected = False ; selected_piece.pop()
+                            else: selected_piece[0].selected = False ; selected_piece.pop()
+                        else: selected_piece[0].selected = False ; selected_piece.pop()
+                                
+                        
                         
 
     pygame.display.flip()
