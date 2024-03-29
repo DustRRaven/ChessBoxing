@@ -94,28 +94,43 @@ for i in range(8):
 # Balise du message au dessus
 
 
-def is_valid_move(button_clicked, previous_pos, piece):
-
+def is_valid_move(button_clicked = tuple, previous_pos = tuple, piece = object):
+    
     operation_symbols = {'W':'-','B':'+'}
-    op = operation_symbols.get(piece.color) 
+    op = operation_symbols.get(piece.color)
 
-    previous_pos = list(previous_pos.rect.center)
-    button_clicked = list(button_clicked.rect.center)
-    print(type(piece).__name__)
+    previous_pos = previous_pos.rect.center
+    button_clicked = button_clicked.rect.center
     piece_type = (type(piece).__name__)
 
     if piece_type=='Pion':
-        
-        print(previous_pos)
-        print(button_clicked)
-        # ne pas oublier la première coordonnée de previous_pos, elle manque ici
-        if tour==1:
-            if button_clicked == eval(str(previous_pos[1]) + op + str(SQUARE_SIZE)) or eval(str(previous_pos[1]) + op + str(SQUARE_SIZE*2)):
+        if (previous_pos[1] == liste_buttons[8].rect.center[1] and piece.color == W) or previous_pos[1] == liste_buttons[55].rect.center[1] and piece.color == B:
+            if button_clicked[1] - previous_pos[1] == eval(f'{op} + {SQUARE_SIZE}') and button_clicked[0] == previous_pos[0]:
                 return True
-        elif button_clicked == eval(str(previous_pos[1]) + op + str(SQUARE_SIZE)):
-            print('ok')
+            elif button_clicked[1] - previous_pos[1] == eval(f'{op} + {SQUARE_SIZE*2}') and button_clicked[0] == previous_pos[0]:
+                return True
+        elif button_clicked[1] - previous_pos[1] == eval(f'{op} + {SQUARE_SIZE}') and button_clicked[0] == previous_pos[0]:
             return True
 
+    if piece_type=='Tour':
+        if button_clicked[1] == previous_pos[1]:
+            start = previous_pos[0] // SQUARE_SIZE ; end   = button_clicked[0] // SQUARE_SIZE
+            step = 1 if end>start else -1
+            for col in range(start +step, end, step):
+                button = liste_buttons[col + previous_pos[1] // SQUARE_SIZE*BOARD_L]
+                if chessboard[button] is not None: return False
+            return True
+        
+        elif button_clicked[0] == previous_pos[0]:
+            start = previous_pos[1] // SQUARE_SIZE
+            end = previous_pos[1] // SQUARE_SIZE
+            step = 1 if end>start else -1
+            for row in range(start + step, end, step):
+                button = liste_buttons[previous_pos[0] // SQUARE_SIZE + row * BOARD_L]
+                if chessboard[button] is not None: return False
+            return True
+    return False 
+            
 
 class Piece:
     def __init__(self, color, texture):
@@ -311,7 +326,7 @@ while running:
                                     else: current_player = W ; tour +=1 ; print(f'{current_player} ;',f'tour: {tour}')
                                 else: selected_piece[0].selected = False ; selected_piece.pop()
                             else: selected_piece[0].selected = False ; selected_piece.pop()
-                        else: selected_piece[0].selected = False ; selected_piece.pop()
+                        
                                 
                         
                         
