@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import sys
 import os
+import IsValidMove
 
 
 ## Définition des couleurs
@@ -42,7 +43,7 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 tour = 1
-current_player = W
+current_player = B
 pygame.display.set_caption('Echecs')
 font = pygame.font.SysFont(None, 30)
 fenetre = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -92,45 +93,7 @@ for i in range(8):
         liste_buttons.append(globals()[nom_button])
 
 # Balise du message au dessus
-
-
-def is_valid_move(button_clicked = tuple, previous_pos = tuple, piece = object):
-    
-    operation_symbols = {'W':'-','B':'+'}
-    op = operation_symbols.get(piece.color)
-
-    previous_pos = previous_pos.rect.center
-    button_clicked = button_clicked.rect.center
-    piece_type = (type(piece).__name__)
-
-    if piece_type=='Pion':
-        if (previous_pos[1] == liste_buttons[8].rect.center[1] and piece.color == W) or previous_pos[1] == liste_buttons[55].rect.center[1] and piece.color == B:
-            if button_clicked[1] - previous_pos[1] == eval(f'{op} + {SQUARE_SIZE}') and button_clicked[0] == previous_pos[0]:
-                return True
-            elif button_clicked[1] - previous_pos[1] == eval(f'{op} + {SQUARE_SIZE*2}') and button_clicked[0] == previous_pos[0]:
-                return True
-        elif button_clicked[1] - previous_pos[1] == eval(f'{op} + {SQUARE_SIZE}') and button_clicked[0] == previous_pos[0]:
-            return True
-
-    if piece_type=='Tour':
-        if button_clicked[1] == previous_pos[1]:
-            start = previous_pos[0] // SQUARE_SIZE ; end   = button_clicked[0] // SQUARE_SIZE
-            step = 1 if end>start else -1
-            for col in range(start +step, end, step):
-                button = liste_buttons[col + previous_pos[1] // SQUARE_SIZE*BOARD_L]
-                if chessboard[button] is not None: return False
-            return True
-        
-        elif button_clicked[0] == previous_pos[0]:
-            start = previous_pos[1] // SQUARE_SIZE
-            end = previous_pos[1] // SQUARE_SIZE
-            step = 1 if end>start else -1
-            for row in range(start + step, end, step):
-                button = liste_buttons[previous_pos[0] // SQUARE_SIZE + row * BOARD_L]
-                if chessboard[button] is not None: return False
-            return True
-    return False 
-            
+         
 
 class Piece:
     def __init__(self, color, texture):
@@ -291,18 +254,18 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+        # Test des mouvements
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 for i in range(64):
                     button_id = liste_buttons[i]
-                    nom_button = get_chess_notation(i) 
+                    nom_button = get_chess_notation(i)
                     if button_id.rect.collidepoint(event.pos):
-                        #afficher_message(f'La case {nom_button}, ({i}) a été cliqué!')
-  
+                          
                         if len(selected_piece) == 0 and chessboard[button_id] != None and chessboard[button_id].color == current_player:
                             previous_pos = button_id ; selected_piece.append(chessboard[button_id]) ; selected_piece[0].selected = True
                             print('choix piece') ; print(f'liste piece selectionnée{selected_piece}') ; print(f'dico board{chessboard[button_id]}')
-
                             
                         elif len(selected_piece) == 0 and chessboard[button_id] == None:
                             print('case vide')
@@ -311,7 +274,7 @@ while running:
                             print('case ennemie')
                             
                         elif len(selected_piece) == 1 and chessboard[button_id] == None:
-                            if is_valid_move(button_id, previous_pos, selected_piece[0]) == True:
+                            if IsValidMove.test(SQUARE_SIZE, liste_buttons, chessboard, W, B, BOARD_L, button_id, previous_pos, selected_piece[0]) == True:
                                 print('mouvement')
                                 if selected_piece[0].rect.center != button_id.rect.center:
                                     selected_piece[0].move(button_id.rect.center)
@@ -321,11 +284,14 @@ while running:
                                     selected_piece[0].selected = False
                                     selected_piece.pop()
                                     print(f'liste piece selectionnée{selected_piece}')
-                                            
+                                    """        
                                     if current_player == W : current_player = B ; print(current_player)
                                     else: current_player = W ; tour +=1 ; print(f'{current_player} ;',f'tour: {tour}')
+                                    """
                                 else: selected_piece[0].selected = False ; selected_piece.pop()
                             else: selected_piece[0].selected = False ; selected_piece.pop()
+                        elif len(selected_piece) == 1 and chessboard[button_id] != None and chessboard[button_id].color == selected_piece[0].color:
+                            selected_piece[0].selected = False ; selected_piece.pop()
                         
                                 
                         
@@ -341,4 +307,3 @@ while running:
 
 pygame.quit()
 sys.exit()
-
