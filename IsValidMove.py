@@ -1,5 +1,5 @@
-def test(SQUARE_SIZE=int, liste_buttons = list, chessboard = dict, W =str, B = str, BOARD_L = int,
-         button_clicked = tuple, prev_pos = tuple, piece = object):
+from CommonValues import *
+def test(button_clicked = tuple, prev_pos = tuple, piece = object):
     
     team = piece.color
     operation_symbols = {'W':'+','B':'-'}
