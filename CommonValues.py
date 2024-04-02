@@ -48,3 +48,4 @@ noms_sprites  = []
 chessboard = {}
 liste_buttons = []
 selected_piece = []
+dead_pieces = []

@@ -35,9 +35,8 @@ from PopulateBoard import populate_board
 class Jeu:
     def __init__(self):
         None
-print(liste_buttons)
-populate_board(liste_buttons)
 
+populate_board(liste_buttons)
 
 
 while running:
@@ -95,7 +94,10 @@ while running:
 
                         elif len(selected_piece) == 1 and chessboard[button_id] != None and chessboard[button_id].color == selected_piece[0].color:
                             selected_piece[0].selected = False ; selected_piece.pop()
-                        
+        if 1==1:
+            pass
+
+
                         
     pygame.display.flip()
     draw_board()

@@ -20,8 +20,18 @@ def test(button_clicked = tuple, prev_pos = tuple, piece = object):
         end_pion_y   =  button_clicked[1] // SQUARE_SIZE
         dist_pion_x  = end_pion_x - start_pion_x
         dist_pion_y  = end_pion_y - start_pion_y
+
+        if prev_pos_ob == button_clicked_ob:
+            if team == W and liste_buttons[64].rect.center[1] == prev_pos[1]:
+                input('Choisi une pièce de remplacement :')
+
         
-        if (prev_pos[1] == liste_buttons[8].rect.center[1] and team == W):
+        elif dist_pion_y == 1 and abs(dist_pion_x) == 1 and team == B:
+            return 1
+        elif dist_pion_y == -1 and abs(dist_pion_x) == 1 and team ==  W:
+            return 1
+        
+        elif (prev_pos[1] == liste_buttons[8].rect.center[1] and team == W):
             if abs(dist_pion_y) <= 2 and abs(dist_pion_x) == 0 and chessboard[button_clicked_ob] is None:
                 return True
             
@@ -33,11 +43,7 @@ def test(button_clicked = tuple, prev_pos = tuple, piece = object):
             return True
         elif dist_pion_y == -1 and dist_pion_x == 0 and team == W:
             return True
-        elif dist_pion_y == 1 and abs(dist_pion_x) == 1 and team == B:
-            return 1
-        elif dist_pion_y == -1 and abs(dist_pion_x) == 1 and team ==  W:
-            return 1
-    
+        
 
     if piece_type == 'Tour':
 
