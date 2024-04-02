@@ -8,6 +8,7 @@ import IsValidAttack
 from Classes import *
 from GetChessNotation import get_chess_notation
 from ButtonGen import ButtonGen
+import IsCheckMate
 
 
 
@@ -17,7 +18,7 @@ pygame.display.set_caption('Echecs')
 
 def afficher_message(message):
     fenetre.fill(BLACK)  # Efface l'écran
-    texte = font.render(message, True, WHITE)
+    texte = font_timer.render(message, True, WHITE)
     texte_rect = texte.get_rect(center=(400, 300))
     fenetre.blit(texte, texte_rect)
     pygame.display.flip()  # Rafraîchit l'affichage
@@ -38,6 +39,8 @@ class Jeu:
 
 populate_board(liste_buttons)
 
+table = Background("table.jpg")
+liste_sprite_other.append(table)
 
 while running:
     for event in pygame.event.get():
@@ -49,6 +52,7 @@ while running:
             if event.button == 1:
                 for i in range(64):
                     button_id = liste_buttons[i]
+                    piece = chessboard[button_id]
                     nom_button = get_chess_notation(i)
                     if button_id.rect.collidepoint(event.pos):
                           
@@ -66,6 +70,7 @@ while running:
                             if IsValidMove.test(button_id, previous_pos, selected_piece[0]) == True:
                                 print('mouvement')
                                 if selected_piece[0].rect.center != button_id.rect.center:
+                                    pygame.mixer.Sound.play(move)
                                     selected_piece[0].move(button_id.rect.center)
                                     chessboard[button_id] = selected_piece[0]
                                     chessboard[previous_pos] = None
@@ -82,7 +87,10 @@ while running:
 
                         ## Test si attaque possible
                         elif len(selected_piece) == 1 and chessboard[button_id] != None and chessboard[button_id].color != selected_piece[0].color:
+                            dead_piece = chessboard[button_id]
                             if IsValidAttack.test(button_id, previous_pos, selected_piece[0]) == True:
+                                pygame.mixer.Sound.play(capture)
+                                IsValidAttack.dead_display(dead_piece)
                                 selected_piece[0].move(button_id.rect.center)
                                 chessboard[button_id] = selected_piece[0]
                                 chessboard[previous_pos] = None
@@ -94,17 +102,38 @@ while running:
 
                         elif len(selected_piece) == 1 and chessboard[button_id] != None and chessboard[button_id].color == selected_piece[0].color:
                             selected_piece[0].selected = False ; selected_piece.pop()
-        if 1==1:
-            pass
+                
+                ## Teste si un pion peut se changer en autre pièce
+                if len(selected_piece) == 1 and type(selected_piece[0]).__name__ == 'Pion':
+                    for dead_piece in W_dead_pieces:
+                        if dead_piece.rect.collidepoint(event.pos) and selected_piece[0].color == W:
+                            
+                                W_dead_pieces.append(selected_piece[0])
+                                dead_piece.move(selected_piece[0].rect.center)
+                                selected_piece[0].selected = False
 
+                                case_pion_switch = list(chessboard.keys())[list(chessboard.values()).index(selected_piece[0])]
 
+                                chessboard[case_pion_switch] = dead_piece
+                                IsValidAttack.dead_display(selected_piece[0])
+                                selected_piece.pop()
+
+    if IsCheckMate.is_check(W) == True:
+        print('White is in check')
+    if IsCheckMate.is_check(B) == True:
+        print('Black is in check')
                         
     pygame.display.flip()
     draw_board()
     
+    
+    table.draw()
+
     for sprite in liste_sprite_pieces:
         sprite.draw()
     
+    IsValidAttack.dead_counter()
+
     clock.tick(60)
 
 pygame.quit()

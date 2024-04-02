@@ -66,3 +66,12 @@ class Roi(Piece):
         super().__init__(color, texture)
     def move(self, coord):
         super().move(coord)
+
+class Background():
+    def __init__(self,texture):
+        self.texture_path = os.path.join('images', texture)
+        self.texture = pygame.image.load(self.texture_path)
+        self.texture = pygame.transform.smoothscale(self.texture, (EMPTY_WIDTH, HEIGHT))
+        self.rect = self.texture.get_rect(topleft=(WIDTH-EMPTY_WIDTH,0))
+    def draw(self):
+        fenetre.blit(self.texture, self.rect)

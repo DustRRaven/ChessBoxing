@@ -1,4 +1,5 @@
 import pygame
+import os
 ## Définition des couleurs
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -6,6 +7,7 @@ BROWN = (107, 68, 35)
 BEIGE = (205, 205, 180)
 BLUE  = (90, 90 , 255)
 RED   = (200,0,0)
+MAROON = (183, 65, 14)
 
 ## Définition des équipes
 W = 'W'
@@ -38,14 +40,41 @@ dt = 0
 tour = 1
 current_player = W
 
-font = pygame.font.SysFont(None, 30)
+font_timer = pygame.font.SysFont(None, 30)
+
 fenetre = pygame.display.set_mode((WIDTH, HEIGHT))
 sprites = pygame.sprite.Group()
 
 ## Définitions des listes et dico utilisés
 liste_sprite_pieces = []
+liste_sprite_other = []
 noms_sprites  = []
 chessboard = {}
 liste_buttons = []
 selected_piece = []
-dead_pieces = []
+W_dead_pieces = []
+B_dead_pieces = []
+W_type_dead = []
+B_type_dead = []
+
+## Audio
+
+move = pygame.mixer.Sound(os.path.join('audio', "move.wav"))
+capture = pygame.mixer.Sound(os.path.join('audio', "capture.wav"))
+
+## Dead counters
+dead_counters = {
+    'Pion': {'W': 0, 'B': 0},
+    'Tour': {'W': 0, 'B': 0},
+    'Cavalier': {'W': 0, 'B': 0},
+    'Fou': {'W': 0, 'B': 0}
+}
+
+coord_dead_pieces = {
+    'Pion': {'W': (8*SQUARE_SIZE+SQUARE_SIZE//2,HEIGHT-(SQUARE_SIZE//2)), 'B': (8*SQUARE_SIZE+SQUARE_SIZE//2,SQUARE_SIZE//2)},
+    'Tour': {'W': (9*SQUARE_SIZE+SQUARE_SIZE//2,HEIGHT-(SQUARE_SIZE//2)), 'B': (9*SQUARE_SIZE+SQUARE_SIZE//2,SQUARE_SIZE//2)},
+    'Cavalier': {'W': (8*SQUARE_SIZE+SQUARE_SIZE//2,HEIGHT-(SQUARE_SIZE+SQUARE_SIZE//2)), 'B': (8*SQUARE_SIZE+SQUARE_SIZE//2,SQUARE_SIZE+SQUARE_SIZE//2)},
+    'Fou': {'W': (9*SQUARE_SIZE+SQUARE_SIZE//2,HEIGHT-(SQUARE_SIZE+SQUARE_SIZE//2)), 'B': (9*SQUARE_SIZE+SQUARE_SIZE//2,SQUARE_SIZE+SQUARE_SIZE//2)},
+    'Reine' : {'W': (8*SQUARE_SIZE+SQUARE_SIZE//2,HEIGHT-(2*SQUARE_SIZE+SQUARE_SIZE//2)), 'B': (8*SQUARE_SIZE+SQUARE_SIZE//2,2*SQUARE_SIZE+SQUARE_SIZE//2)},
+    'Roi' : {'W': (9*SQUARE_SIZE+SQUARE_SIZE//2,HEIGHT-(2*SQUARE_SIZE+SQUARE_SIZE//2)), 'B': (9*SQUARE_SIZE+SQUARE_SIZE//2,2*SQUARE_SIZE+SQUARE_SIZE//2)}
+}
