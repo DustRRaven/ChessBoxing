@@ -33,6 +33,11 @@ def test(button_clicked = tuple, prev_pos = tuple, piece = object):
             return True
         elif dist_pion_y == -1 and dist_pion_x == 0 and team == W:
             return True
+        elif dist_pion_y == 1 and abs(dist_pion_x) == 1 and team == B:
+            return 1
+        elif dist_pion_y == -1 and abs(dist_pion_x) == 1 and team ==  W:
+            return 1
+    
 
     if piece_type == 'Tour':
 

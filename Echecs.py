@@ -4,6 +4,7 @@ import sys
 import os
 from CommonValues import *
 import IsValidMove
+import IsValidAttack
 from Classes import *
 from GetChessNotation import get_chess_notation
 from ButtonGen import ButtonGen
@@ -12,6 +13,7 @@ from ButtonGen import ButtonGen
 
 ## pygame setup, les valeurs se trouve dans CommonValues
 pygame.init()
+pygame.display.set_caption('Echecs')
 
 def afficher_message(message):
     fenetre.fill(BLACK)  # Efface l'écran
@@ -35,7 +37,7 @@ class Jeu:
         None
 print(liste_buttons)
 populate_board(liste_buttons)
-selected_piece = []
+
 
 
 while running:
@@ -78,13 +80,23 @@ while running:
                                     
                                 else: selected_piece[0].selected = False ; selected_piece.pop()
                             else: selected_piece[0].selected = False ; selected_piece.pop()
+
+                        ## Test si attaque possible
+                        elif len(selected_piece) == 1 and chessboard[button_id] != None and chessboard[button_id].color != selected_piece[0].color:
+                            if IsValidAttack.test(button_id, previous_pos, selected_piece[0]) == True:
+                                selected_piece[0].move(button_id.rect.center)
+                                chessboard[button_id] = selected_piece[0]
+                                chessboard[previous_pos] = None
+                                selected_piece[0].selected =  False
+                                selected_piece.pop()
+
+                                if current_player == W : current_player = B ; print(current_player)
+                                else: current_player = W ; tour +=1 ; print(f'{current_player} ;',f'tour: {tour}')
+
                         elif len(selected_piece) == 1 and chessboard[button_id] != None and chessboard[button_id].color == selected_piece[0].color:
                             selected_piece[0].selected = False ; selected_piece.pop()
                         
-                                
                         
-                        
-
     pygame.display.flip()
     draw_board()
     

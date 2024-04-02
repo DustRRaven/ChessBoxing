@@ -37,7 +37,7 @@ running = True
 dt = 0
 tour = 1
 current_player = W
-pygame.display.set_caption('Echecs')
+
 font = pygame.font.SysFont(None, 30)
 fenetre = pygame.display.set_mode((WIDTH, HEIGHT))
 sprites = pygame.sprite.Group()
@@ -47,4 +47,4 @@ liste_sprite_pieces = []
 noms_sprites  = []
 chessboard = {}
 liste_buttons = []
-
+selected_piece = []
