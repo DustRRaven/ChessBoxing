@@ -1,0 +1,1 @@
+Check in IsValidMovement if pieces have a test to check if the case is empty if so remove it, it's already asked before calling it
