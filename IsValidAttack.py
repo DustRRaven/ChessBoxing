@@ -3,9 +3,9 @@ import IsValidMove
 
 def test(button_clicked = tuple, prev_pos = tuple, piece = object):
     prev_piece = chessboard[button_clicked]
+    #print(prev_piece)
     chessboard[button_clicked] = None
     piece_type = (type(piece).__name__)
-    #print(piece_type)
     if piece_type != 'Pion':
         if IsValidMove.test(button_clicked, prev_pos, piece) == True:
             if prev_piece.color == B:

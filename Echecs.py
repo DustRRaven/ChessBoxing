@@ -114,24 +114,31 @@ while running:
                                 selected_piece[0].move(button_id.rect.center)
                                 chessboard[button_id] = selected_piece[0]
                                 chessboard[previous_pos] = None
+
+                                
+
+
                                 selected_piece[0].selected =  False
                                 selected_piece.pop()
 
                                 if current_player == W : current_player = B ; print(current_player)
                                 else: current_player = W ; tour +=1 ; print(f'{current_player} ;',f'tour: {tour}')
 
+                                
+
                         elif len(selected_piece) == 1 and chessboard[button_id] != None and chessboard[button_id].color == selected_piece[0].color:
                             selected_piece[0].selected = False ; selected_piece.pop()
-                
-                        if IsCheckMate.is_check(W) == True:
-                            print('White is in check')
-                        if IsCheckMate.is_check(B) == True:
-                            print('Black is in check')
-                        if IsCheckMate.is_checkmate(W) == True:
-                            gamedone(B)
-                        if IsCheckMate.is_checkmate(B) == True:
-                            gamedone(W)
+                        
+                        print(IsCheckMate.get_possible_moves(W))
 
+                        if IsCheckMate.is_check(W, chessboard):
+                                print('White in check')
+                        elif IsCheckMate.is_check(B, chessboard):
+                                print('Black in check')
+                        if IsCheckMate.is_checkmate(W):
+                            gamedone(W)
+                        elif IsCheckMate.is_checkmate(B):
+                            gamedone(B)
 
                 ## Teste si un pion peut se changer en autre pièce
                 if len(selected_piece) == 1 and type(selected_piece[0]).__name__ == 'Pion':
@@ -148,8 +155,9 @@ while running:
                                 IsValidAttack.dead_display(selected_piece[0])
                                 selected_piece.pop()
 
-
-                        
+                
+                
+        
     pygame.display.flip()
     draw_board()
     
