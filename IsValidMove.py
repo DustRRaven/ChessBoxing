@@ -1,5 +1,5 @@
-def test(SQUARE_SIZE=int, liste_buttons = list, chessboard = dict, W =str, B = str, BOARD_L = int,
-         button_clicked = tuple, prev_pos = tuple, piece = object):
+from CommonValues import *
+def test(button_clicked = tuple, prev_pos = tuple, piece = object):
     
     team = piece.color
     operation_symbols = {'W':'+','B':'-'}
@@ -20,12 +20,22 @@ def test(SQUARE_SIZE=int, liste_buttons = list, chessboard = dict, W =str, B = s
         end_pion_y   =  button_clicked[1] // SQUARE_SIZE
         dist_pion_x  = end_pion_x - start_pion_x
         dist_pion_y  = end_pion_y - start_pion_y
+
+        if prev_pos_ob == button_clicked_ob:
+            if team == W and liste_buttons[64].rect.center[1] == prev_pos[1]:
+                input('Choisi une pièce de remplacement :')
+
         
-        if (prev_pos[1] == liste_buttons[8].rect.center[1] and team == W):
-            if abs(dist_pion_y) <= 2 and abs(dist_pion_x) == 0 and chessboard[button_clicked_ob] is None:
+        elif dist_pion_y == 1 and abs(dist_pion_x) == 1 and team == B:
+            return 12
+        elif dist_pion_y == -1 and abs(dist_pion_x) == 1 and team == W:
+            return 12
+        
+        elif (prev_pos[1] == liste_buttons[8].rect.center[1] and team == W):
+            if abs(dist_pion_y) <= 2 and dist_pion_x == 0:
                 return True
             
-        elif prev_pos[1] == liste_buttons[55].rect.center[1] and team == B and chessboard[button_clicked_ob] is None:
+        elif prev_pos[1] == liste_buttons[55].rect.center[1] and team == B:
             if abs(dist_pion_y) <= 2 and abs(dist_pion_x) == 0:
                 return True
 
@@ -259,7 +269,7 @@ def test(SQUARE_SIZE=int, liste_buttons = list, chessboard = dict, W =str, B = s
         dist_roi_x  = end_roi_x - start_roi_x
         dist_roi_y  = end_roi_y - start_roi_y
 
-        if abs(dist_roi_x) <= 1 and abs(dist_roi_y) <= 1:
+        if abs(dist_roi_x) == 1 and abs(dist_roi_y) == 1:
 
             # Droite
             if dist_roi_x == 1 and dist_roi_y == 0:
