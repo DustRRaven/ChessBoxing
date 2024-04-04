@@ -27,15 +27,15 @@ def test(button_clicked = tuple, prev_pos = tuple, piece = object):
 
         
         elif dist_pion_y == 1 and abs(dist_pion_x) == 1 and team == B:
-            return 1
-        elif dist_pion_y == -1 and abs(dist_pion_x) == 1 and team ==  W:
-            return 1
+            return 12
+        elif dist_pion_y == -1 and abs(dist_pion_x) == 1 and team == W:
+            return 12
         
         elif (prev_pos[1] == liste_buttons[8].rect.center[1] and team == W):
-            if abs(dist_pion_y) <= 2 and abs(dist_pion_x) == 0 and chessboard[button_clicked_ob] is None:
+            if abs(dist_pion_y) <= 2 and dist_pion_x == 0:
                 return True
             
-        elif prev_pos[1] == liste_buttons[55].rect.center[1] and team == B and chessboard[button_clicked_ob] is None:
+        elif prev_pos[1] == liste_buttons[55].rect.center[1] and team == B:
             if abs(dist_pion_y) <= 2 and abs(dist_pion_x) == 0:
                 return True
 
@@ -43,7 +43,6 @@ def test(button_clicked = tuple, prev_pos = tuple, piece = object):
             return True
         elif dist_pion_y == -1 and dist_pion_x == 0 and team == W:
             return True
-        
 
     if piece_type == 'Tour':
 
@@ -270,7 +269,7 @@ def test(button_clicked = tuple, prev_pos = tuple, piece = object):
         dist_roi_x  = end_roi_x - start_roi_x
         dist_roi_y  = end_roi_y - start_roi_y
 
-        if abs(dist_roi_x) <= 1 and abs(dist_roi_y) <= 1:
+        if abs(dist_roi_x) == 1 and abs(dist_roi_y) == 1:
 
             # Droite
             if dist_roi_x == 1 and dist_roi_y == 0:

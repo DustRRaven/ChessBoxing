@@ -6,7 +6,7 @@ from ButtonGen import *
 def populate_board(liste_buttons):
     # Association des cases aux pièces (None ici car aucunes pièces au départ)
     # pour la suite voir fin de la fonction populate_board()
-    print(liste_buttons)
+    #print(liste_buttons)
     for board in range(64):
         nom_board = get_chess_notation(board) ; nom_board_o = liste_buttons[board]
         chessboard.update({nom_board_o:None})
@@ -14,7 +14,7 @@ def populate_board(liste_buttons):
     for pion in range(2):
         nom_button = None
         clr = color_team[pion]
-        print(clr)
+        #print(clr)
         path = None
         for team in range(8):
             if clr==W : nom_button = f'button{get_chess_notation(BOARD_L+team)}'             ; path = 'piw.png'
@@ -83,5 +83,5 @@ def populate_board(liste_buttons):
             nom_piece_solo = noms_sprites[piece]
             comp_piece=liste_sprite_pieces[piece]
             if comp_piece.rect.center == nom_case_ob.rect.center:
-                print(f'{nom_piece_solo} est en case {nom_case}')
+                # print(f'{nom_piece_solo} est en case {nom_case}')
                 chessboard.update({nom_case_ob:comp_piece})

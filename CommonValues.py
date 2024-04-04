@@ -39,6 +39,7 @@ running = True
 dt = 0
 tour = 1
 current_player = W
+pause = False
 
 font_timer = pygame.font.SysFont(None, 30)
 
@@ -78,3 +79,6 @@ coord_dead_pieces = {
     'Reine' : {'W': (8*SQUARE_SIZE+SQUARE_SIZE//2,HEIGHT-(2*SQUARE_SIZE+SQUARE_SIZE//2)), 'B': (8*SQUARE_SIZE+SQUARE_SIZE//2,2*SQUARE_SIZE+SQUARE_SIZE//2)},
     'Roi' : {'W': (9*SQUARE_SIZE+SQUARE_SIZE//2,HEIGHT-(2*SQUARE_SIZE+SQUARE_SIZE//2)), 'B': (9*SQUARE_SIZE+SQUARE_SIZE//2,2*SQUARE_SIZE+SQUARE_SIZE//2)}
 }
+W_checkmate_cpt = 0
+B_checkmate_cpt = 0
+

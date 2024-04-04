@@ -2,11 +2,10 @@ from CommonValues import *
 import IsValidMove
 
 def test(button_clicked = tuple, prev_pos = tuple, piece = object):
-    
-
     prev_piece = chessboard[button_clicked]
     chessboard[button_clicked] = None
-    piece_type = (type(prev_piece).__name__)
+    piece_type = (type(piece).__name__)
+    #print(piece_type)
     if piece_type != 'Pion':
         if IsValidMove.test(button_clicked, prev_pos, piece) == True:
             if prev_piece.color == B:
@@ -17,7 +16,7 @@ def test(button_clicked = tuple, prev_pos = tuple, piece = object):
             chessboard[button_clicked] = prev_piece
             
     else:
-        if IsValidMove.test(button_clicked, prev_pos, piece) == 1:
+        if IsValidMove.test(button_clicked, prev_pos, piece) == 12:
             if prev_piece.color == W:
                 W_dead_pieces.append(prev_piece)
             else: B_dead_pieces.append(prev_piece)

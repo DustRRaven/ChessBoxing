@@ -7,7 +7,7 @@ class Button:
         self.surface = pygame.Surface((SQUARE_SIZE, SQUARE_SIZE))
         self.rect = self.surface.get_rect(center=(coordx,coordy))
         fenetre.blit(self.surface, self.rect)
-        print(f'Button created at ({coordx}, {coordy}), rect: {self.rect.center}')
+        # print(f'Button created at ({coordx}, {coordy}), rect: {self.rect.center}')
 
 class Piece:
     def __init__(self, color, texture):

@@ -16,13 +16,34 @@ import IsCheckMate
 pygame.init()
 pygame.display.set_caption('Echecs')
 
-def afficher_message(message):
-    fenetre.fill(BLACK)  # Efface l'écran
-    texte = font_timer.render(message, True, WHITE)
-    texte_rect = texte.get_rect(center=(400, 300))
-    fenetre.blit(texte, texte_rect)
-    pygame.display.flip()  # Rafraîchit l'affichage
-    print(message)
+def afficher_message(message, color):
+    if color == B:
+        fenetre.fill(BLACK)  # Efface l'écran
+        texte = font_timer.render(message, True, WHITE)
+        texte_rect = texte.get_rect(center=(WIDTH//2,HEIGHT//2))
+        fenetre.blit(texte, texte_rect)
+        pygame.display.flip()  # Rafraîchit l'affichage
+    
+    else:
+        fenetre.fill(WHITE)  # Efface l'écran
+        texte = font_timer.render(message, True, BLACK)
+        texte_rect = texte.get_rect(center=(WIDTH//2,HEIGHT//2))
+        fenetre.blit(texte, texte_rect)
+        pygame.display.flip()  # Rafraîchit l'affichage
+
+def gamedone(color):
+    pause = True
+    while pause:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+        afficher_message(f'{color} won', color)
+        pygame.display.update()
+        clock.tick(15)
+
+        
+
+    
 
 def draw_board():
     for row in range(8):
@@ -46,6 +67,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            break
 
         # Test des mouvements
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -58,7 +80,7 @@ while running:
                           
                         if len(selected_piece) == 0 and chessboard[button_id] != None and chessboard[button_id].color == current_player:
                             previous_pos = button_id ; selected_piece.append(chessboard[button_id]) ; selected_piece[0].selected = True
-                            print('choix piece') ; print(f'liste piece selectionnée{selected_piece}') ; print(f'dico board{chessboard[button_id]}')
+                            print('choix piece')
                             
                         elif len(selected_piece) == 0 and chessboard[button_id] == None:
                             print('case vide')
@@ -74,10 +96,8 @@ while running:
                                     selected_piece[0].move(button_id.rect.center)
                                     chessboard[button_id] = selected_piece[0]
                                     chessboard[previous_pos] = None
-                                    print(f'liste piece selectionnée{selected_piece}')
                                     selected_piece[0].selected = False
                                     selected_piece.pop()
-                                    print(f'liste piece selectionnée{selected_piece}')
                                             
                                     if current_player == W : current_player = B ; print(current_player)
                                     else: current_player = W ; tour +=1 ; print(f'{current_player} ;',f'tour: {tour}')
@@ -103,6 +123,16 @@ while running:
                         elif len(selected_piece) == 1 and chessboard[button_id] != None and chessboard[button_id].color == selected_piece[0].color:
                             selected_piece[0].selected = False ; selected_piece.pop()
                 
+                        if IsCheckMate.is_check(W) == True:
+                            print('White is in check')
+                        if IsCheckMate.is_check(B) == True:
+                            print('Black is in check')
+                        if IsCheckMate.is_checkmate(W) == True:
+                            gamedone(B)
+                        if IsCheckMate.is_checkmate(B) == True:
+                            gamedone(W)
+
+
                 ## Teste si un pion peut se changer en autre pièce
                 if len(selected_piece) == 1 and type(selected_piece[0]).__name__ == 'Pion':
                     for dead_piece in W_dead_pieces:
@@ -118,10 +148,7 @@ while running:
                                 IsValidAttack.dead_display(selected_piece[0])
                                 selected_piece.pop()
 
-    if IsCheckMate.is_check(W) == True:
-        print('White is in check')
-    if IsCheckMate.is_check(B) == True:
-        print('Black is in check')
+
                         
     pygame.display.flip()
     draw_board()
@@ -136,5 +163,6 @@ while running:
 
     clock.tick(60)
 
-pygame.quit()
-sys.exit()
+#pygame.quit()
+
+#sys.exit()
